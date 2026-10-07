@@ -8,7 +8,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // * Please DO NOT INCLUDE the private app access token in your repo. Don't do this practicum in your normal account.
-const PRIVATE_APP_ACCESS = '';
+const PRIVATE_APP_ACCESS = process.env.PRIVATE_APP_ACCESS;
+
 
 // TODO: ROUTE 1 - Create a new app.get route for the homepage to call your custom object data. Pass this data along to the front-end and create a new pug template in the views folder.
 
@@ -65,6 +66,30 @@ app.post('/update', async (req, res) => {
 
 });
 */
+
+app.get('/', async (req, res) => {
+    process.loadEnvFile();
+    //console.log(process.env.PRIVATE_ACCESS_TOKEN);
+    const contacts = 'https://api.hubspot.com/crm/v3/objects/contacts';
+    const headers = {
+        Authorization: `Bearer ${process.env.PRIVATE_ACCESS_TOKEN}`,
+        'Content-Type': 'application/json'
+    }
+
+    try {
+        const response = axios.get(contacts, { headers }).then((data) => {
+            //console.log(data.data);
+            data.data.results.forEach((entry) => {
+                console.log(entry);
+            });
+        });
+
+    }
+    catch(e) {
+        console.error(e);
+    }
+    res.render("contacts", {});
+})
 
 
 // * Localhost
