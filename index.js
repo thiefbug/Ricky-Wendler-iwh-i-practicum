@@ -76,21 +76,37 @@ app.get('/', async (req, res) => {
         'Content-Type': 'application/json'
     }
 
-    try {
-        const response = axios.get(contacts, { headers }).then((data) => {
-            //console.log(data.data);
-            data.data.results.forEach((entry) => {
-                console.log(entry);
-            });
-        });
+    let contactList = [];
 
+    try {
+        const response = axios.get(contacts, { headers }).then((resp) => {
+            //console.log(data.data);
+            //contactList = data.data.results;
+            resp.data.results.forEach((entry) => {
+                //console.log(entry);
+                contactList.push(entry);
+            });
+            console.log(contactList);
+            res.render("contacts", { data: contactList });
+        });
     }
     catch(e) {
         console.error(e);
     }
-    res.render("contacts", {});
+});
+
+app.get('/update-cobj', async(req, res) => {
+    process.loadEnvFile();
+
 })
 
+app.post('/update', async(req, res) => {
+    console.log(req.body.testinput);
+})
+
+app.get('/updates', async(req, res) => {
+    res.render("updates", {});
+})
 
 // * Localhost
 app.listen(3000, () => console.log('Listening on http://localhost:3000'));

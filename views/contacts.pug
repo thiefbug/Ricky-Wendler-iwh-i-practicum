@@ -18,9 +18,17 @@
 doctype html
 html
     head
-        title = 'Testtitle'
+        title Testtitle
     body
         h1 Contacts 
         .cards 
             div 
-                p I am a test
+            each contact in data
+                h2.card__name #{contact.properties.firstname} #{contact.properties.lastname}
+                p.card__email #{contact.properties.email}
+        a(href="/updates") Go to updates
+        .inputform
+            form(method="POST", action="/update")
+                input#testinput(type="text", name="testinput")
+                button(type="submit") bla bla send
+            
